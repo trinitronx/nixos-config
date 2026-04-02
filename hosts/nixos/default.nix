@@ -15,8 +15,8 @@ in
     # Systemd services and timers
     ../../modules/nixos/systemd.nix
 
-    # Agenix for secrets management - temporarily disabled
-    # inputs.agenix.nixosModules.default
+    # sops-nix for secrets management - temporarily disabled
+    # sops-nix.nixosModules.sops
   ];
 
   # Hardware Configuration (merged from hardware-configuration.nix)
