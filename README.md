@@ -525,9 +525,28 @@ Interested in contributing to this project? Here's how you can help:
 This project is released under the [BSD-3-Clause license](https://github.com/trinitronx/nixos-config/blob/main/LICENSE).
 
 ### Support
-Did you find my project useful? Your support is appreciated.
 
-<a href="https://www.buymeacoffee.com/trinitronx1" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+If you find this project useful and appreciate my fork,
+would you be willing to click one of the buttons below to Sponsor this project
+and help me continue?
+
+<!-- markdownlint-disable MD013 MD033  -->
+| Method       | Button                                                                                                                               |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------------: |
+| GitHub       | [💖 Sponsor](https://github.com/sponsors/trinitronx)                                                                                 |
+| Liberapay    | [![Support with Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/trinitronx/donate)                |
+| PayPal       | [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/JamesCuzella)              |
+| Ko-Fi        | [![Support with Ko-Fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/trinitronx)                                     |
+| BuyMeACoffee | [<img alt="Buy Me A Coffee" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="51px" width="180px" />](https://www.buymeacoffee.com/TrinitronX) |
+| Polar        | [![Support with Polar](https://polar.sh/embed/seeks-funding-shield.svg?org=lyraphase)](https://polar.sh/lyraphase)                   |
+| Patreon <sup>(_my artist page_)</sup> | [![Support with Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dphasik%26type%3Dpatrons&style=for-the-badge)](https://www.patreon.com/bePatron?u=16585899)                                     |
+<!-- markdownlint-enable MD013 MD033  -->
+
+Every little bit is appreciated! Thank you! 🙏
+
+Did you find `dustinlyons`'s original project useful? He also appreciates your support.
+
+<a href="https://www.buymeacoffee.com/dustinlyons1" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ### Stars
 
