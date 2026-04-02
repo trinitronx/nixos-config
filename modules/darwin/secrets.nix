@@ -1,47 +1,41 @@
-{ config, pkgs, agenix, secrets, ... }:
+{ config, pkgs, sops-nix, secrets, ... }:
 
 let user = "dustin"; in
 {
-  age = {
-    identityPaths = [
-      "/Users/${user}/.ssh/id_ed25519"
-    ];
+  sops = {
+    defaultSopsFile = "${secrets}/secrets.yaml";
+    defaultSopsFormat = "yaml";
+
+    gnupg.home = "/Users/${user}/.gnupg";
+    gnupg.sshKeyPaths = [];
 
     secrets = {
-      "syncthing-cert" = {
-        symlink = true;
-        path = "/Users/${user}/Library/Application Support/Syncthing/cert.pem";
-        file =  "${secrets}/darwin-syncthing-cert.age";
-        mode = "644";
-        owner = "${user}";
-        group = "staff";
-      };
+      # "syncthing-cert" = {
+      #   path = "/Users/${user}/Library/Application Support/Syncthing/cert.pem";
+      #   mode = "0644";
+      #   owner = "${user}";
+      #   group = "staff";
+      # };
 
-      "syncthing-key" = {
-        symlink = true;
-        path = "/Users/${user}/Library/Application Support/Syncthing/key.pem";
-        file =  "${secrets}/darwin-syncthing-key.age";
-        mode = "600";
-        owner = "${user}";
-        group = "staff";
-      };
+      # "syncthing-key" = {
+      #   path = "/Users/${user}/Library/Application Support/Syncthing/key.pem";
+      #   mode = "0600";
+      #   owner = "${user}";
+      #   group = "staff";
+      # };
 
-      "github-ssh-key" = {
-        symlink = true;
-        path = "/Users/${user}/.ssh/id_github";
-        file =  "${secrets}/github-ssh-key.age";
-        mode = "600";
-        owner = "${user}";
-        group = "staff";
-      };
+      # "github-ssh-key" = {
+      #   path = "/Users/${user}/.ssh/id_github";
+      #   mode = "0600";
+      #   owner = "${user}";
+      #   group = "staff";
+      # };
 
-      "github-signing-key" = {
-        symlink = false;
-        path = "/Users/${user}/.ssh/pgp_github.key";
-        file =  "${secrets}/github-signing-key.age";
-        mode = "600";
-        owner = "${user}";
-      };
+      # "github-signing-key" = {
+      #   path = "/Users/${user}/.ssh/pgp_github.key";
+      #   mode = "0600";
+      #   owner = "${user}";
+      # };
     };
   };
 }

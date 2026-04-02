@@ -1,4 +1,4 @@
-{ agenix, config, pkgs, ... }:
+{ sops-nix, config, pkgs, ... }:
 let 
   user = "dustin";
   myEmacs = import ../../modules/shared/emacs.nix { inherit pkgs; };
@@ -8,7 +8,7 @@ in
     ../../modules/darwin/secrets.nix
     ../../modules/darwin/home-manager.nix
     ../../modules/shared
-    agenix.darwinModules.default
+    sops-nix.darwinModules.sops
   ];
   # Setup user, packages, programs
   nix = {
@@ -27,7 +27,7 @@ in
   # Load configuration that is shared across systems
   environment.systemPackages = with pkgs; [
     myEmacs
-    agenix.packages."${pkgs.system}".default
+    sops
   ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
 
   #launchd.user.agents = {

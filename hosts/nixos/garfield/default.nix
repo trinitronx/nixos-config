@@ -24,7 +24,7 @@ in
     ../../../modules/nixos/home-assistant.nix
 
     # Note: systemd.nix module excluded for this host
-    # Note: agenix disabled for this host
+    # Note: sops-nix disabled for this host
   ];
 
   # Hardware Configuration - use dedicated hardware-configuration.nix

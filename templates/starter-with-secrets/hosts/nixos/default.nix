@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, agenix, ... }:
+{ config, inputs, pkgs, sops-nix, ... }:
 
 let user = "%USER%";
     keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p" ]; in
@@ -7,7 +7,7 @@ let user = "%USER%";
     ../../modules/nixos/secrets.nix
     ../../modules/nixos/disk-config.nix
     ../../modules/shared
-    agenix.nixosModules.default
+    sops-nix.nixosModules.sops
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -298,7 +298,7 @@ let user = "%USER%";
   ];
 
   environment.systemPackages = with pkgs; [
-    agenix.packages."${pkgs.system}".default # "x86_64-linux"
+    sops
     gitFull
     inetutils
   ];
