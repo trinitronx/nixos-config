@@ -1,11 +1,13 @@
-{ config, pkgs, agenix, secrets, ... }:
+{ config, pkgs, sops-nix, secrets, ... }:
 
 let user = "dustin"; in
 {
-  age = {
-    identityPaths = [
-      "/Users/${user}/.ssh/id_ed25519"
-    ];
+  sops = {
+    defaultSopsFile = "${secrets}/secrets.yaml";
+    defaultSopsFormat = "yaml";
+
+    gnupg.home = "/Users/${user}/.gnupg";
+    gnupg.sshKeyPaths = [];
 
     secrets = {
       "syncthing-cert" = {
