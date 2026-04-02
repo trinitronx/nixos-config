@@ -2,7 +2,10 @@
   description = "Starter Configuration with secrets for MacOS and NixOS";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    agenix.url = "github:ryantm/agenix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager.url = "github:nix-community/home-manager";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
@@ -28,7 +31,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, sops-nix } @inputs:
     let
       user = "%USER%";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
