@@ -55,8 +55,7 @@
         "apply" = mkApp "apply" system;
         "build-switch" = mkApp "build-switch" system;
         "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
+        "import-keys" = mkApp "import-keys" system;
         "check-keys" = mkApp "check-keys" system;
         "install" = mkApp "install" system;
         "install-with-secrets" = mkApp "install-with-secrets" system;
@@ -66,8 +65,7 @@
         "build" = mkApp "build" system;
         "build-switch" = mkApp "build-switch" system;
         "clean" = mkApp "clean" system;
-        "copy-keys" = mkApp "copy-keys" system;
-        "create-keys" = mkApp "create-keys" system;
+        "import-keys" = mkApp "import-keys" system;
         "check-keys" = mkApp "check-keys" system;
         "rollback" = mkApp "rollback" system;
       };

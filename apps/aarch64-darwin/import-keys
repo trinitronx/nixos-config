@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${GREEN}=== sops GPG/Yubikey Key Setup ===${NC}"
+echo ""
+
+check_gpg() {
+  if ! command -v gpg >/dev/null 2>&1; then
+    echo -e "${RED}gpg is not installed. Please install gnupg first.${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}gpg is available.${NC}"
+}
+
+check_yubikey() {
+  echo ""
+  echo -e "${GREEN}Checking for Yubikey...${NC}"
+
+  if gpg --card-status >/dev/null 2>&1; then
+    echo -e "${GREEN}Yubikey detected!${NC}"
+    gpg --card-status 2>/dev/null | grep -E "^(Reader|Application ID|Name|Language|URL|Login|Key attributes|Signature key|Encryption key|Authentication key)"
+  else
+    echo -e "${YELLOW}No Yubikey detected.${NC}"
+    echo -e "${YELLOW}Insert your Yubikey and try again.${NC}"
+    exit 1
+  fi
+}
+
+fetch_gpg_keys() {
+  echo ""
+  echo -e "${GREEN}Fetching GPG public key from Yubikey...${NC}"
+
+  local url
+  url=$(gpg --card-status 2>/dev/null | grep "^URL" | awk '{print $NF}')
+
+  if [ -n "$url" ] && [ "$url" != "(not" ]; then
+    echo -e "${GREEN}Fetching key from: $url${NC}"
+    curl -sL "$url" | gpg --import
+  else
+    echo -e "${YELLOW}No URL configured on Yubikey card.${NC}"
+    echo -e "${YELLOW}You can import your public key manually:${NC}"
+    echo -e "${YELLOW}  gpg --import <your-public-key.asc>${NC}"
+    echo -e "${YELLOW}Or fetch from a keyserver:${NC}"
+    echo -e "${YELLOW}  gpg --keyserver keys.openpgp.org --recv-keys <KEY_ID>${NC}"
+  fi
+}
+
+verify_keys() {
+  echo ""
+  local secret_keys
+  secret_keys=$(gpg --list-secret-keys --keyid-format long 2>/dev/null)
+
+  if [ -n "$secret_keys" ]; then
+    echo -e "${GREEN}GPG secret keys available:${NC}"
+    echo "$secret_keys"
+    echo ""
+    echo -e "${GREEN}Setup complete! Your Yubikey GPG keys are ready for sops.${NC}"
+    echo -e "${GREEN}Ensure your .sops.yaml references the correct GPG key fingerprints.${NC}"
+  else
+    echo -e "${RED}No GPG secret keys found after setup.${NC}"
+    echo -e "${RED}You may need to import your public key and link it to the Yubikey.${NC}"
+    exit 1
+  fi
+}
+
+check_gpg
+check_yubikey
+fetch_gpg_keys
+verify_keys
