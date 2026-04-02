@@ -1,71 +1,51 @@
 #!/usr/bin/env bash
 set -e
 
-unmount_usb() {
-  if mountpoint -q /mnt/usb; then
-    sudo umount /mnt/usb
-    echo -e "\e[0;32mUSB drive unmounted.\e[0m"
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${GREEN}=== GPG/Yubikey Key Verification ===${NC}"
+echo ""
+echo -e "${YELLOW}Keys for sops are stored on your Yubikey and accessed via gpg-agent.${NC}"
+echo -e "${YELLOW}No key files need to be copied.${NC}"
+echo ""
+
+check_gpg() {
+  if ! command -v gpg >/dev/null 2>&1; then
+    echo -e "${RED}gpg is not installed or not in PATH.${NC}"
+    exit 1
   fi
+  echo -e "${GREEN}gpg is available.${NC}"
 }
 
-mount_usb() {
-  if mountpoint -q /mnt/usb; then
-    echo -e "\e[0;32mUSB drive already mounted.\e[0m"
+check_yubikey() {
+  if gpg --card-status >/dev/null 2>&1; then
+    echo -e "${GREEN}Yubikey detected and accessible.${NC}"
   else
-    device_found=false
-    for dev in sda sdb sdc sdd sde sdf sdg sdh sdi sdj sdk sdl; do
-      if sudo blkid /dev/$dev | grep -iq 'TYPE="vfat"'; then
-        device_found=true
-        mkdir -p /mnt/usb
-        sudo mount /dev/$dev /mnt/usb && { echo -e "\e[0;32mUSB drive mounted successfully on /dev/$dev.\e[0m"; break; } || echo -e "\e[0;31mFailed to mount /dev/$dev.\e[0m"
-      fi
-    done
-    if [ "$device_found" = false ]; then
-      echo -e "\e[0;31mNo USB devices found.\e[0m"
-    fi
-  fi
-}
-
-setup_ssh_directory() {
-  export SSH_DIR=/root/.ssh
-  mkdir -p $SSH_DIR
-}
-
-check_file_exists() {
-  if [[ ! -f $1 ]]; then
-    echo -e "\e[0;31mError: File $1 does not exist.\e[0m"
+    echo -e "${RED}No Yubikey detected. Insert your Yubikey and try again.${NC}"
     exit 1
   fi
 }
 
-copy_keys() {
-  check_file_exists "/mnt/usb/id_ed25519_agenix.pub"
-  check_file_exists "/mnt/usb/id_ed25519_agenix"
-  cp /mnt/usb/id_ed25519_agenix.pub $SSH_DIR
-  cp /mnt/usb/id_ed25519_agenix $SSH_DIR
-  chmod 600 $SSH_DIR/id_ed25519_{agenix,agenix.pub}
-  echo -e "\e[0;32mKeys copied successfully.\e[0m"
+check_gpg_keys() {
+  local secret_keys
+  secret_keys=$(gpg --list-secret-keys --keyid-format long 2>/dev/null)
+
+  if [ -n "$secret_keys" ]; then
+    echo -e "${GREEN}GPG secret keys found:${NC}"
+    echo "$secret_keys"
+  else
+    echo -e "${RED}No GPG secret keys found.${NC}"
+    echo -e "${RED}Run the create-keys script to set up your Yubikey GPG keys.${NC}"
+    exit 1
+  fi
 }
 
-set_keys() {
-  check_file_exists "/mnt/usb/id_ed25519_github.pub"
-  check_file_exists "/mnt/usb/id_ed25519_github"
-  cp /mnt/usb/id_ed25519_github.pub $SSH_DIR/id_ed25519.pub
-  cp /mnt/usb/id_ed25519_github $SSH_DIR/id_ed25519
-  chmod 600 $SSH_DIR/id_ed25519
-  chmod 644 $SSH_DIR/id_ed25519.pub
-}
+check_gpg
+check_yubikey
+check_gpg_keys
 
-change_ownership() {
-  chown nixos:wheel $SSH_DIR/id_ed25519{,.pub}
-  chown nixos:wheel $SSH_DIR/id_ed25519_{agenix,agenix.pub}
-}
-
-trap unmount_usb EXIT
-
-setup_ssh_directory
-mount_usb
-copy_keys
-set_keys
-change_ownership
-unmount_usb
+echo ""
+echo -e "${GREEN}Yubikey GPG keys are available. No copying needed.${NC}"
